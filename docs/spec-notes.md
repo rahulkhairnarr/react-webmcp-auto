@@ -5,13 +5,13 @@ Verified: 2026-10-13. Everything spec-dependent in this repo lives in
 
 ## Sources and how well each was verified
 
-| Source | Status |
-| --- | --- |
-| [webmachinelearning/webmcp](https://github.com/webmachinelearning/webmcp) README, [`index.bs`](https://raw.githubusercontent.com/webmachinelearning/webmcp/main/index.bs), `implementation-status.md` | Read directly. |
-| [Declarative API explainer](https://github.com/webmachinelearning/webmcp/blob/main/declarative-api-explainer.md) | Read directly. |
-| [`@mcp-b/webmcp-polyfill` 6.0.1](https://www.npmjs.com/package/@mcp-b/webmcp-polyfill) and [`webmcp-types` 0.1.10](https://www.npmjs.com/package/webmcp-types) | Tarballs downloaded and source/types read. |
-| [WebMCP-org/npm-packages](https://github.com/WebMCP-org/npm-packages) | README read. |
-| [Chrome imperative API docs](https://developer.chrome.com/docs/ai/webmcp/imperative-api) | **NOT read directly.** `developer.chrome.com` does not resolve from the build sandbox. Only a search snippet was seen. Re-verify when network allows. |
+| Source                                                                                                                                                                                                | Status                                                                                                                                                |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [webmachinelearning/webmcp](https://github.com/webmachinelearning/webmcp) README, [`index.bs`](https://raw.githubusercontent.com/webmachinelearning/webmcp/main/index.bs), `implementation-status.md` | Read directly.                                                                                                                                        |
+| [Declarative API explainer](https://github.com/webmachinelearning/webmcp/blob/main/declarative-api-explainer.md)                                                                                      | Read directly.                                                                                                                                        |
+| [`@mcp-b/webmcp-polyfill` 6.0.1](https://www.npmjs.com/package/@mcp-b/webmcp-polyfill) and [`webmcp-types` 0.1.10](https://www.npmjs.com/package/webmcp-types)                                        | Tarballs downloaded and source/types read.                                                                                                            |
+| [WebMCP-org/npm-packages](https://github.com/WebMCP-org/npm-packages)                                                                                                                                 | README read.                                                                                                                                          |
+| [Chrome imperative API docs](https://developer.chrome.com/docs/ai/webmcp/imperative-api)                                                                                                              | **NOT read directly.** `developer.chrome.com` does not resolve from the build sandbox. Only a search snippet was seen. Re-verify when network allows. |
 
 Spec status: W3C WebML Community Group **CG-DRAFT**. Not a standard. Expect churn.
 

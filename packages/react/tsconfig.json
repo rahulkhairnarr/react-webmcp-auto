@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": { "paths": { "@react-webmcp-auto/core": ["../core/src/index.ts"] } },
+  "include": ["src"]
+}

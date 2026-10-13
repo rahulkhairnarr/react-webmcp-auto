@@ -1,0 +1,53 @@
+{
+  "name": "react-webmcp-auto",
+  "version": "0.0.0",
+  "description": "Zero-config WebMCP for React apps: auto-registers tools from forms, routes and page state.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "./dist/auto.js",
+    "./dist/auto.cjs"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./auto": {
+      "types": "./dist/auto.d.ts",
+      "import": "./dist/auto.js",
+      "require": "./dist/auto.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-webmcp-auto/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@mcp-b/webmcp-polyfill": "^6.0.0",
+    "react": ">=17"
+  },
+  "peerDependenciesMeta": {
+    "@mcp-b/webmcp-polyfill": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@mcp-b/webmcp-polyfill": "^6.0.1",
+    "@types/react": "^18.3.0",
+    "react": "^18.3.1"
+  }
+}
