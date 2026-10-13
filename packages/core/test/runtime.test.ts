@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest';
+import type { WebMCPAutoConfig } from '../src/types';
 import { startRuntime, type Runtime } from '../src/runtime';
 import { createGuard, CallLog, RateLimiter } from '../src/safety';
 import { installNetworkTracker, settle } from '../src/settle';
@@ -11,7 +12,7 @@ afterEach(() => {
   document.body.innerHTML = '';
 });
 
-async function boot(config = {}, scanDelayMs = 0) {
+async function boot(config: WebMCPAutoConfig = {}, scanDelayMs = 0) {
   const adapter = fakeAdapter();
   Object.defineProperty(document, 'modelContext', {
     value: Object.assign(new EventTarget(), {
@@ -22,7 +23,10 @@ async function boot(config = {}, scanDelayMs = 0) {
     }),
     configurable: true,
   });
-  rt = await startRuntime(config, { scanDelayMs });
+  rt = await startRuntime(
+    { discover: { navigation: false, snapshot: false }, ...config },
+    { scanDelayMs },
+  );
   return rt;
 }
 
@@ -182,5 +186,28 @@ describe('settle', () => {
     const res = await settle(document, undefined, { quietMs: 50, timeoutMs: 150 });
     clearInterval(iv);
     expect(res.timedOut).toBe(true);
+  });
+});
+
+describe('runtime defaults', () => {
+  it('registers forms + navigation + read tools by default, but no click actions', async () => {
+    html('<form id="a"></form>');
+    const adapter = fakeAdapter();
+    Object.defineProperty(document, 'modelContext', {
+      value: Object.assign(new EventTarget(), {
+        registerTool: (t: never) => {
+          adapter.register(t);
+        },
+      }),
+      configurable: true,
+    });
+    rt = await startRuntime({}, { scanDelayMs: 0 });
+    expect(rt.registry.names.sort()).toEqual([
+      'get_form_state',
+      'get_page_snapshot',
+      'list_routes',
+      'navigate',
+      'submit_a',
+    ]);
   });
 });

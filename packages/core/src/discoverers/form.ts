@@ -19,7 +19,7 @@ function submitButton(form: HTMLFormElement): HTMLElement | null {
   );
 }
 
-function resolveName(
+export function resolveFormName(
   form: HTMLFormElement,
   route: string,
   index: number,
@@ -81,7 +81,7 @@ export const formDiscoverer: Discoverer = {
     );
     const out: ToolCandidate[] = [];
     forms.forEach((form, index) => {
-      const { base, stable } = resolveName(form, route, index);
+      const { base, stable } = resolveFormName(form, route, index);
       const model = buildFormModel(form);
       const risk = classifyRisk({
         text: nameSourceText(form),

@@ -16,3 +16,8 @@ export { settle, installNetworkTracker } from './settle';
 export { CallLog, RateLimiter, createGuard } from './safety';
 export type { CallLogEntry } from './safety';
 export { buildFormModel, toInputSchema } from './schema';
+export { createNavigationDiscoverer } from './discoverers/navigation';
+export { createSnapshotDiscoverer, buildSnapshot, wrapUntrusted } from './discoverers/snapshot';
+export { createHistoryRouter, safeInternalPath } from './router';
+export type { RouterAdapter } from './router';
+export { elementId, elementById } from './ids';

@@ -1,6 +1,9 @@
 import { createAdapter, createNoopAdapter, type Adapter, type AdapterOptions } from './adapter';
 import { currentRoute } from './dom';
 import { formDiscoverer } from './discoverers/form';
+import { createNavigationDiscoverer } from './discoverers/navigation';
+import { createSnapshotDiscoverer } from './discoverers/snapshot';
+import type { RouterAdapter } from './router';
 import { applyManifest, type Manifest } from './manifest';
 import { assignNames, matchesAny } from './naming';
 import { Registry, type RegistryTool } from './registry';
@@ -19,6 +22,8 @@ export interface RuntimeOptions extends AdapterOptions {
   discoverers?: Discoverer[];
   /** Bypass the idle scheduling and throttling (tests). */
   scanDelayMs?: number;
+  /** Framework router (React Router, Next...). Defaults to <a href> scanning + History API. */
+  router?: RouterAdapter;
   confirmUI?: (call: Parameters<NonNullable<ResolvedConfig['confirm']>>[0]) => Promise<boolean>;
 }
 
@@ -45,9 +50,14 @@ function resolveManifest(m: ResolvedConfig['manifest']): Manifest | undefined {
   return m && typeof m === 'object' ? (m as Manifest) : undefined;
 }
 
-export function defaultDiscoverers(config: ResolvedConfig): Discoverer[] {
+export function defaultDiscoverers(
+  config: ResolvedConfig,
+  getRouter?: () => RouterAdapter | undefined,
+): Discoverer[] {
   const list: Discoverer[] = [];
   if (config.discover.forms) list.push(formDiscoverer);
+  if (config.discover.navigation) list.push(createNavigationDiscoverer(getRouter));
+  if (config.discover.snapshot) list.push(createSnapshotDiscoverer());
   return list;
 }
 
@@ -67,7 +77,7 @@ export async function startRuntime(
   let tracker: NetworkTracker | undefined;
   if (config.enabled && win) tracker = installNetworkTracker(win);
 
-  const discoverers = options.discoverers ?? defaultDiscoverers(config);
+  const discoverers = options.discoverers ?? defaultDiscoverers(config, () => options.router);
   const ctx: ScanContext = {
     document: doc,
     config,
