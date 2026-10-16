@@ -1,5 +1,10 @@
 /** Small, defensive DOM helpers. Read-only. */
 
+/** CSS.escape is missing in some environments (jsdom); this covers what ids can contain. */
+export function cssEscape(s: string): string {
+  return typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(s) : s.replace(/[^\w-]/g, '\\$&');
+}
+
 export function text(el: Element | null | undefined): string {
   return (el?.textContent ?? '').replace(/\s+/g, ' ').trim();
 }
@@ -63,7 +68,7 @@ export function accessibleName(el: Element): string {
   const id = el.getAttribute('id');
   if (id) {
     const root = el.getRootNode() as Document | ShadowRoot;
-    const l = root.querySelector?.(`label[for="${CSS.escape(id)}"]`);
+    const l = root.querySelector?.(`label[for="${cssEscape(id)}"]`);
     const t = l ? ownText(l, el) : '';
     if (t) return t;
   }

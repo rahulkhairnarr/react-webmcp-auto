@@ -21,3 +21,10 @@ export { createSnapshotDiscoverer, buildSnapshot, wrapUntrusted } from './discov
 export { createHistoryRouter, safeInternalPath } from './router';
 export type { RouterAdapter } from './router';
 export { elementId, elementById } from './ids';
+export { createConfirmDialog } from './confirm-dialog';
+export type { ConfirmDialogOptions } from './confirm-dialog';
+export { createActionDiscoverer, collectActions } from './discoverers/actions';
+export { declarativeDiscoverer } from './discoverers/declarative';
+export { auditDocument } from './audit';
+export type { AuditWarning, WarningCode } from './audit';
+export type { ScanReport, ScanReportEntry } from './runtime';

@@ -1,17 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { formDiscoverer } from '../src/discoverers/form';
-import { resolveConfig, type ScanContext, type ToolCandidate } from '../src/types';
-import { settle } from '../src/settle';
-import { html } from './helpers';
+import type { ToolCandidate } from '../src/types';
+import { html, testCtx } from './helpers';
 
-function ctx(): ScanContext {
-  return {
-    document,
-    config: resolveConfig(),
-    route: '/',
-    settle: (o) => settle(document, undefined, { quietMs: 20, timeoutMs: 500, ...o }),
-  };
-}
+const ctx = () => testCtx();
 const discover = (): ToolCandidate[] => formDiscoverer.discover(ctx());
 const parse = (r: { content: { text: string }[] }) => JSON.parse(r.content[0]!.text);
 

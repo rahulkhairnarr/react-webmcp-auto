@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import type { WebMCPAutoConfig } from '../src/types';
-import { startRuntime, type Runtime } from '../src/runtime';
+import { startRuntime, type Runtime, type RuntimeOptions } from '../src/runtime';
 import { createGuard, CallLog, RateLimiter } from '../src/safety';
 import { installNetworkTracker, settle } from '../src/settle';
 import { fakeAdapter, html, tick } from './helpers';
@@ -12,7 +12,7 @@ afterEach(() => {
   document.body.innerHTML = '';
 });
 
-async function boot(config: WebMCPAutoConfig = {}, scanDelayMs = 0) {
+async function boot(config: WebMCPAutoConfig = {}, scanDelayMs = 0, extra: RuntimeOptions = {}) {
   const adapter = fakeAdapter();
   Object.defineProperty(document, 'modelContext', {
     value: Object.assign(new EventTarget(), {
@@ -25,7 +25,7 @@ async function boot(config: WebMCPAutoConfig = {}, scanDelayMs = 0) {
   });
   rt = await startRuntime(
     { discover: { navigation: false, snapshot: false }, ...config },
-    { scanDelayMs },
+    { scanDelayMs, ...extra },
   );
   return rt;
 }
@@ -84,16 +84,17 @@ describe('runtime', () => {
     expect((await boot({ enabled: false })).registry.names).toEqual([]);
   });
 
-  it('destructive tools are refused when nobody can confirm (fails closed) and the call is logged', async () => {
+  it('destructive tools fail closed when the dialog is never answered (timeout) and the call is logged', async () => {
     html('<form id="d"><button>Delete account</button></form>');
     let submitted = false;
     document.getElementById('d')!.addEventListener('submit', (e) => {
       e.preventDefault();
       submitted = true;
     });
-    const r = await boot();
+    const r = await boot({}, 0, { confirmDialog: { timeoutMs: 50 } });
     const out = await r.registry.get('submit_d')!.execute({}, {});
     expect(out.isError).toBe(true);
+    expect(document.querySelector('[data-webmcp-ui]')).toBeNull();
     expect(submitted).toBe(false);
     expect(r.log.entries().at(-1)).toMatchObject({
       name: 'submit_d',

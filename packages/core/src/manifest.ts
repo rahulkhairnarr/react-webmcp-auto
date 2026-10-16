@@ -35,6 +35,7 @@ export function applyManifest(
       description: m.description ?? c.description,
       inputSchema: m.inputSchema ?? c.inputSchema,
       risk: m.risk ?? c.risk,
+      riskDeclared: m.risk ? true : c.riskDeclared,
     });
   }
   return out;

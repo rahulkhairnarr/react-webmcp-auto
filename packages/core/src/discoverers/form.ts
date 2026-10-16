@@ -1,4 +1,12 @@
-import { accessibleName, currentRoute, deepQueryAll, isHidden, nearestHeading, text } from '../dom';
+import {
+  accessibleName,
+  cssEscape,
+  currentRoute,
+  deepQueryAll,
+  isHidden,
+  nearestHeading,
+  text,
+} from '../dom';
 import { fillControl, FillError } from '../fill';
 import { collectValidationErrors } from '../diagnostics';
 import { slug } from '../naming';
@@ -51,7 +59,7 @@ function nameSourceText(form: HTMLFormElement): string {
 
 function relocate(candidateForm: HTMLFormElement, doc: Document): HTMLFormElement | null {
   if (candidateForm.isConnected) return candidateForm;
-  const sel = candidateForm.id ? `form#${CSS.escape(candidateForm.id)}` : null;
+  const sel = candidateForm.id ? `form#${cssEscape(candidateForm.id)}` : null;
   return sel ? doc.querySelector<HTMLFormElement>(sel) : null;
 }
 
@@ -97,6 +105,7 @@ export const formDiscoverer: Discoverer = {
         description: describeForm(form, model, declaredRisk ?? risk),
         inputSchema: toInputSchema(model),
         risk,
+        riskDeclared: !!declaredRisk,
         source: 'form',
         node: form,
         execute: (input, opts) => executeForm(form, ctx, input, opts.signal),

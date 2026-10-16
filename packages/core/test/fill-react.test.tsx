@@ -3,8 +3,7 @@ import React, { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { formDiscoverer } from '../src/discoverers/form';
 import { setNativeValue } from '../src/fill';
-import { settle } from '../src/settle';
-import { resolveConfig } from '../src/types';
+import { testCtx } from './helpers';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -22,12 +21,7 @@ function mount(el: React.ReactElement) {
   act(() => root!.render(el));
 }
 
-const ctx = () => ({
-  document,
-  config: resolveConfig(),
-  route: '/',
-  settle: (o?: object) => settle(document, undefined, { quietMs: 30, timeoutMs: 800, ...o }),
-});
+const ctx = () => testCtx();
 
 describe('native setter vs React controlled inputs', () => {
   it('plain el.value= is ignored by React, setNativeValue is not', () => {

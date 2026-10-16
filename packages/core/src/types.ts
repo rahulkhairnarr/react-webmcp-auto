@@ -48,6 +48,8 @@ export interface ToolCandidate {
   description: string;
   inputSchema: JsonSchema;
   risk: Risk;
+  /** True when `risk` came from `data-webmcp-risk` or the manifest rather than the text heuristic. */
+  riskDeclared?: boolean;
   /** Id of the discoverer that produced this candidate. */
   source: string;
   /** Element the tool was derived from (for diagnostics, never serialised). */
@@ -90,6 +92,8 @@ export interface ScanContext {
   route: string;
   /** Shared settle helper bound to the runtime's network tracker. */
   settle(opts?: SettleOptions): Promise<SettleResult>;
+  /** Asks the user to confirm a consequential call (config.confirm, else the built-in dialog). Fails closed. */
+  confirm(call: ToolCall): Promise<boolean>;
 }
 
 export interface Discoverer {

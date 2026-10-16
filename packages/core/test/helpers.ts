@@ -1,4 +1,11 @@
 import type { Adapter, AdapterTool } from '../src/adapter';
+import { settle } from '../src/settle';
+import {
+  resolveConfig,
+  type ScanContext,
+  type ToolCall,
+  type WebMCPAutoConfig,
+} from '../src/types';
 
 export interface FakeAdapter extends Adapter {
   tools: Map<string, AdapterTool>;
@@ -33,3 +40,19 @@ export function html(markup: string): void {
 }
 
 export const tick = (ms = 0) => new Promise((r) => setTimeout(r, ms));
+
+/** ScanContext for discoverer unit tests: short settle, confirm answers come from `answers` (default: decline). */
+export function testCtx(
+  opts: { config?: WebMCPAutoConfig; answers?: boolean[]; asked?: ToolCall[] } = {},
+): ScanContext {
+  return {
+    document,
+    config: resolveConfig(opts.config),
+    route: '/',
+    settle: (o) => settle(document, undefined, { quietMs: 20, timeoutMs: 500, ...o }),
+    confirm: async (call) => {
+      opts.asked?.push(call);
+      return opts.answers?.shift() ?? false;
+    },
+  };
+}

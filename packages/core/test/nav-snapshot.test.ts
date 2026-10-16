@@ -2,16 +2,9 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { createNavigationDiscoverer } from '../src/discoverers/navigation';
 import { buildSnapshot, createSnapshotDiscoverer, neutralize } from '../src/discoverers/snapshot';
 import { createHistoryRouter, safeInternalPath } from '../src/router';
-import { settle } from '../src/settle';
-import { resolveConfig, type ScanContext } from '../src/types';
-import { html } from './helpers';
+import { html, testCtx } from './helpers';
 
-const ctx = (): ScanContext => ({
-  document,
-  config: resolveConfig(),
-  route: '/',
-  settle: (o) => settle(document, undefined, { quietMs: 10, timeoutMs: 300, ...o }),
-});
+const ctx = () => testCtx();
 const text = (r: { content: { text: string }[] }) => r.content[0]!.text;
 
 afterEach(() => {

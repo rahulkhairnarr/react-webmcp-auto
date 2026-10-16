@@ -1,0 +1,29 @@
+{
+  "name": "react-webmcp-cli",
+  "version": "0.0.0",
+  "description": "CLI for react-webmcp-auto: audit, init, manifest.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "react-webmcp": "./dist/bin.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-webmcp-auto/core": "workspace:*",
+    "playwright-core": "^1.49.0"
+  }
+}
